@@ -13,7 +13,7 @@ extern "C" {
 }
 
 namespace VideoProcessing {
-    // ¶¨ÒåÒ»¸ö½á¹¹ÌåÀ´´æ´¢ÅäÖÃĞÅÏ¢
+    // å®šä¹‰ä¸€ä¸ªç»“æ„ä½“æ¥å­˜å‚¨é…ç½®ä¿¡æ¯
     struct Config {
         std::string videoName;
         int x;
@@ -21,7 +21,7 @@ namespace VideoProcessing {
     };
 
     struct RGB {
-        uint8_t r, g, b;    //uint8_t ÊÇÒ»ÖÖ8Î»ÎŞ·ûºÅÕûÊıÀàĞÍ£¬ÄÜ¹»±íÊ¾´Ó0µ½255µÄÕûÊı·Ç³£¸ßĞ§
+        uint8_t r, g, b;    //uint8_t æ˜¯ä¸€ç§8ä½æ— ç¬¦å·æ•´æ•°ç±»å‹ï¼Œèƒ½å¤Ÿè¡¨ç¤ºä»0åˆ°255çš„æ•´æ•°éå¸¸é«˜æ•ˆ
     };
 
     struct FrameRGB {
@@ -42,15 +42,15 @@ namespace VideoProcessing {
         void cleanup();
 
         const char* video_path;
-        AVFormatContext* format_ctx;        //ÓÃÓÚ´æ´¢ÊÓÆµÎÄ¼şµÄ¸ñÊ½ĞÅÏ¢ºÍÉÏÏÂÎÄ,ÓÃÓÚ´ò¿ªÊÓÆµÎÄ¼ş£¬¶ÁÈ¡ÎÄ¼şÍ·£¬»ñÈ¡ÊÓÆµÁ÷ĞÅÏ¢µÈ¡£
-        AVCodecContext* codec_ctx;          //´æ´¢±à½âÂëÆ÷Ïà¹ØµÄÉÏÏÂÎÄĞÅÏ¢
-        const AVCodec* codec;               //´æ´¢±à½âÂëÆ÷µÄĞÅÏ¢¡£
-        AVCodecParameters* codec_params;    //½âÂëÆ÷²ÎÊı
-        AVFrame* frame;                     //Ö¡Êı¾İ
-        AVFrame* frame_rgb;                 //ÓÃÓÚ´æ´¢RGB¸ñÊ½µÄÖ¡Êı¾İ
+        AVFormatContext* format_ctx;        //ç”¨äºå­˜å‚¨è§†é¢‘æ–‡ä»¶çš„æ ¼å¼ä¿¡æ¯å’Œä¸Šä¸‹æ–‡,ç”¨äºæ‰“å¼€è§†é¢‘æ–‡ä»¶ï¼Œè¯»å–æ–‡ä»¶å¤´ï¼Œè·å–è§†é¢‘æµä¿¡æ¯ç­‰ã€‚
+        AVCodecContext* codec_ctx;          //å­˜å‚¨ç¼–è§£ç å™¨ç›¸å…³çš„ä¸Šä¸‹æ–‡ä¿¡æ¯
+        const AVCodec* codec;               //å­˜å‚¨ç¼–è§£ç å™¨çš„ä¿¡æ¯ã€‚
+        AVCodecParameters* codec_params;    //è§£ç å™¨å‚æ•°
+        AVFrame* frame;                     //å¸§æ•°æ®
+        AVFrame* frame_rgb;                 //ç”¨äºå­˜å‚¨RGBæ ¼å¼çš„å¸§æ•°æ®
         SwsContext* sws_ctx;
-        int video_stream_index;             //ÊÓÆµÁ÷ÔÚÎÄ¼şÖĞµÄË÷Òı
-        uint8_t* buffer;                    //´æ´¢×ª»»ºóµÄRGB888¸ñÊ½µÄÖ¡Êı¾İ
+        int video_stream_index;             //è§†é¢‘æµåœ¨æ–‡ä»¶ä¸­çš„ç´¢å¼•
+        uint8_t* buffer;                    //å­˜å‚¨è½¬æ¢åçš„RGB888æ ¼å¼çš„å¸§æ•°æ®
     };
 
 }

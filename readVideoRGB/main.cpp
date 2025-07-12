@@ -8,7 +8,7 @@
 #include <tuple>
 
 #define MAX_PATH 100
-// »ñÈ¡µ±Ç°¿ÉÖ´ĞĞÎÄ¼şËùÔÚÄ¿Â¼µÄÂ·¾¶
+// è·å–å½“å‰å¯æ‰§è¡Œæ–‡ä»¶æ‰€åœ¨ç›®å½•çš„è·¯å¾„
 std::string getExecutablePath() {
     char buffer[MAX_PATH];
     GetModuleFileNameA(nullptr, buffer, MAX_PATH);
@@ -16,12 +16,12 @@ std::string getExecutablePath() {
     return std::string(buffer).substr(0, pos);
 }
 
-// ¶ÁÈ¡ÅäÖÃÎÄ¼ş²¢·µ»ØÅäÖÃĞÅÏ¢
+// è¯»å–é…ç½®æ–‡ä»¶å¹¶è¿”å›é…ç½®ä¿¡æ¯
  VideoProcessing::Config readConfig(const std::string& configFilePath) {
     VideoProcessing::Config config;
     std::ifstream configFile(configFilePath);
     if (!configFile.is_open()) {
-        std::cerr << "ÎŞ·¨´ò¿ªÅäÖÃÎÄ¼ş: " << configFilePath << std::endl;
+        std::cerr << "æ— æ³•æ‰“å¼€é…ç½®æ–‡ä»¶: " << configFilePath << std::endl;
         return config;
     }
 
@@ -29,9 +29,9 @@ std::string getExecutablePath() {
     while (std::getline(configFile, line)) {
         std::istringstream iss(line);
         std::string key, value;
-        // ÒÔ '=' Îª·Ö¸ô·û·Ö¸î¼üºÍÖµ
+        // ä»¥ '=' ä¸ºåˆ†éš”ç¬¦åˆ†å‰²é”®å’Œå€¼
         if (std::getline(iss, key, '=') && std::getline(iss, value)) {
-            // È¥³ı¼üºÍÖµÇ°ºóµÄ¿Õ¸ñ
+            // å»é™¤é”®å’Œå€¼å‰åçš„ç©ºæ ¼
             key.erase(0, key.find_first_not_of(" \t"));
             key.erase(key.find_last_not_of(" \t") + 1);
             value.erase(0, value.find_first_not_of(" \t"));
@@ -54,7 +54,7 @@ std::string getExecutablePath() {
 
  std::tuple<int64_t, double, int, int>  getDurationFrameRate(const char * videoPath) {
 
-     // »ñÈ¡ÊÓÆµ×ÜÊ±³¤£¨Ãë£©ºÍÃ¿ÃëÖ¡ÂÊ
+     // è·å–è§†é¢‘æ€»æ—¶é•¿ï¼ˆç§’ï¼‰å’Œæ¯ç§’å¸§ç‡
      AVFormatContext* format_ctx = avformat_alloc_context();
      if (avformat_open_input(&format_ctx, videoPath, nullptr, nullptr) != 0) {
          std::cerr << "Could not open video file." << std::endl;
@@ -79,8 +79,8 @@ std::string getExecutablePath() {
          return std::make_tuple(-1, 0.0, 0, 0);
      }
 
-     int64_t duration = format_ctx->duration / AV_TIME_BASE; // ÊÓÆµ×ÜÊ±³¤£¨Ãë£©
-     double frame_rate = av_q2d(video_stream->avg_frame_rate); // Ã¿ÃëÖ¡ÂÊ
+     int64_t duration = format_ctx->duration / AV_TIME_BASE; // è§†é¢‘æ€»æ—¶é•¿ï¼ˆç§’ï¼‰
+     double frame_rate = av_q2d(video_stream->avg_frame_rate); // æ¯ç§’å¸§ç‡
      int width = video_stream->codecpar->width;
      int height = video_stream->codecpar->height;
 
@@ -95,7 +95,7 @@ int main()
    /* std::cout << "Hello World!\n";
     printf("%s\n", avcodec_configuration());*/
 
-    // »ñÈ¡µ±Ç°¿ÉÖ´ĞĞÎÄ¼şÄ¿Â¼
+    // è·å–å½“å‰å¯æ‰§è¡Œæ–‡ä»¶ç›®å½•
     std::string exe_path = getExecutablePath();
 
     std::string configFilePath = exe_path+"\\readvideoRGB.config";
@@ -110,20 +110,20 @@ int main()
     VideoProcessing::VideoReader video_reader(video_path.c_str());
     std::vector<VideoProcessing::FrameRGB> rgb_values = video_reader.getRGBValues(config.x, config.y);
 
-    // Çå¿Õresult.txtÄÚÈİ
+    // æ¸…ç©ºresult.txtå†…å®¹
     std::ofstream result_file(resultTxt.c_str(), std::ios::out | std::ios::trunc);
     if (!result_file) {
         std::cerr << "Failed to open result.txt for writing." << std::endl;
         return -1;
     }
 
-    // ½«ÊÓÆµ×ÜÊ±³¤ºÍÃ¿ÃëÖ¡ÂÊĞ´Èëµ½result.txtÎÄ¼şÖĞ
-    result_file << "ÊÓÆµ×ÜÊ±³¤: " << std::get<0>(val) << " Ãë" << std::endl;
-    result_file << "Ã¿ÃëÖ¡ÂÊ: " << std::get<1>(val) << " Ö¡/Ãë" << std::endl;
-    result_file << "¿í: " << std::get<2>(val) << " ÏñËØ" << std::endl;
-    result_file << "¸ß: " << std::get<3>(val) << " ÏñËØ" << std::endl;
+    // å°†è§†é¢‘æ€»æ—¶é•¿å’Œæ¯ç§’å¸§ç‡å†™å…¥åˆ°result.txtæ–‡ä»¶ä¸­
+    result_file << "è§†é¢‘æ€»æ—¶é•¿: " << std::get<0>(val) << " ç§’" << std::endl;
+    result_file << "æ¯ç§’å¸§ç‡: " << std::get<1>(val) << " å¸§/ç§’" << std::endl;
+    result_file << "å®½: " << std::get<2>(val) << " åƒç´ " << std::endl;
+    result_file << "é«˜: " << std::get<3>(val) << " åƒç´ " << std::endl;
 
-    // ½«Ã¿Ö¡µÄRGBÖµĞÅÏ¢Ğ´Èëµ½result.txtÎÄ¼şÖĞ
+    // å°†æ¯å¸§çš„RGBå€¼ä¿¡æ¯å†™å…¥åˆ°result.txtæ–‡ä»¶ä¸­
     for (const auto& frame_rgb : rgb_values) {
         result_file << "Frame " << frame_rgb.frame_number << ": RGB=("
             << static_cast<int>(frame_rgb.rgb.r) << ", "
@@ -133,7 +133,7 @@ int main()
 
     result_file.close();
 
-    std::cout << "ÊÓÆµRGB¶ÁÈ¡³É¹¦!" << std::endl;
+    std::cout << "è§†é¢‘RGBè¯»å–æˆåŠŸ!" << std::endl;
 
     return 0;
 }
