@@ -92,9 +92,10 @@ std::string getExecutablePath() {
 
 int main()
 {
-   /* std::cout << "Hello World!\n";
-    printf("%s\n", avcodec_configuration());*/
 
+	// 强制控制台使用 UTF-8，确保控制台能正确显示 UTF-8 字节
+	SetConsoleOutputCP(CP_UTF8);
+        
     // 获取当前可执行文件目录
     std::string exe_path = getExecutablePath();
 
@@ -133,7 +134,7 @@ int main()
 
     result_file.close();
 
-    std::cout << "视频RGB读取成功!" << std::endl;
+    std::cout << u8"视频RGB读取成功!" << std::endl;
 
     return 0;
 }
