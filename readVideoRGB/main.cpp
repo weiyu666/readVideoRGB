@@ -6,6 +6,7 @@
 #include <sstream>
 #include <cstdlib>
 #include <tuple>
+#include <cmath>
 
 #define MAX_PATH 100
 // 获取当前可执行文件所在目录的路径
@@ -52,7 +53,7 @@ std::string getExecutablePath() {
     return config;
 }
 
- std::tuple<int64_t, double, int, int>  getDurationFrameRate(const char * videoPath) {
+ std::tuple<int64_t, int, int, int>  getDurationFrameRate(const char * videoPath) {
 
      // 获取视频总时长（秒）和每秒帧率
      AVFormatContext* format_ctx = avformat_alloc_context();
@@ -81,12 +82,13 @@ std::string getExecutablePath() {
 
      int64_t duration = format_ctx->duration / AV_TIME_BASE; // 视频总时长（秒）
      double frame_rate = av_q2d(video_stream->avg_frame_rate); // 每秒帧率
+	 int fram_rate_num = (frame_rate > 0.0) ? static_cast<int>(std::ceil(frame_rate)) : 0;     // 每秒帧率的整数部分
      int width = video_stream->codecpar->width;
      int height = video_stream->codecpar->height;
 
      avformat_close_input(&format_ctx);
 
-     return std::make_tuple(duration, frame_rate, width, height);
+     return std::make_tuple(duration, fram_rate_num, width, height);
  }
 
 
@@ -106,7 +108,7 @@ int main()
 
     std::string resultTxt = exe_path + "\\result.txt";
 
-    std::tuple<int64_t, double, int, int>  val = getDurationFrameRate(video_path.c_str());
+    std::tuple<int64_t, int, int, int>  val = getDurationFrameRate(video_path.c_str());
 
     VideoProcessing::VideoReader video_reader(video_path.c_str());
     std::vector<VideoProcessing::FrameRGB> rgb_values = video_reader.getRGBValues(config.x, config.y);

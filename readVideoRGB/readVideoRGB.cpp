@@ -1,6 +1,5 @@
 #include "readVideoRGB.h"
-// readVideoRGB.cpp : 此文件包含 "main" 函数。程序执行将在此处开始并结束。
-//
+
 
 VideoProcessing::VideoReader::VideoReader(const char* video_path) : video_path(video_path), format_ctx(nullptr), codec_ctx(nullptr), codec(nullptr),
 codec_params(nullptr), frame(nullptr), frame_rgb(nullptr), sws_ctx(nullptr),
